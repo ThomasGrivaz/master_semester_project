@@ -9,7 +9,7 @@ mu = mean(X);
 sigma = std(X);
 
 X_normalised = bsxfun(@minus, X, mu);
-X_normalised = bsxfun(@rdivide, X, sigma);
+X_normalised = bsxfun(@rdivide, X_normalised, sigma);
 
 end
 

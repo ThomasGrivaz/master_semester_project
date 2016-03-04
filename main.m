@@ -4,7 +4,7 @@
 
 %% Data preprocessing
 
-clear all;
+clear;
 close all;
 
 load data/train.mat;
@@ -14,7 +14,7 @@ X = train.images(1:100,:);
 y = train.labels(1:100,:);
 
 % normalise the features
-%X = gradient_descent_preprocessing(X); 
+% X = gradient_descent_preprocessing(X); 
 % features are already normalised, sparse matrix leads to NaN
 
 %% Gradient descent
