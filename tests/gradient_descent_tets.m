@@ -18,14 +18,14 @@ y = X * W_gt;
 
 ftest.eval = @(W) norm(X*W-y,'fro')^2;
 ftest.grad = @(W) 2*X'*(X*W-y);
-ftest.gradlipshitz = 2*norm(X)^2; 
+ftest.gradlipshiptz = 2*norm(X)^2;
 
-
+optArgs.timeStep = 1/ftest.gradlipshiptz
 
 Win = rand(M,1);
 
-[W_opt, stats1] = gradient_descent(Win,ftest,1/ftest.gradlipshitz);
-[W_opt, stats2] = gradient_descent(Win,ftest);
+[W_opt, stats1] = gradient_descent(Win,ftest, optArgs);
+%[W_opt, stats2] = gradient_descent(Win,ftest);
 
 err = (norm(W_gt - W_opt,'fro') > 1e-5);
 

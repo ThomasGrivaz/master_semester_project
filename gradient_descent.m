@@ -1,38 +1,42 @@
-function [w, stats] = gradient_descent(startPt, objFct, varargin)
-%gradient_descent.m Compute the gradient descent
-%   Compute the gradient descent of a given objective function from a
-%   specified starting point. The user can choose to manually set a time
-%   step and the number of iterations 
+function [w, stats] = gradient_descent(startPt, objFct, optArgs)
+%gradient_descent.m Compute the gradient descent of a given objective
+%    function from a specified starting point.
+%
+% Input parameters
+%   startPt : starting point
+%   objFct  : objective function to minimize
+%   optArgs : structure of optional inputs
+%
+% Output parameters
+%   w       : weight vector
+%   stats   : structure containing statistics
 
 % check if the correct number of inputs is entered
-numvarargs = length(varargin);
-if numvarargs > 2
-    error('myfuns:gradient_descent:TooManyInputs', ...
-        'requires at most 2 optional inputs');
+if nargin < 3
+    optArgs = struct;
 end
 
-% set default values for the time step and number of iterations if not
-% specified
-optargs = {0.001, 1000};
+% initialise optional inputs
+if ~isfield(optArgs, 'timeStep'), optArgs.timeStep = 0.001; end
+if ~isfield(optArgs, 'numIters'), optArgs.numIters = 1000; end
+if ~isfield(optArgs, 'debugMode'), optArgs.debugMode = 0; end
 
-% overwrite values if specified
-optargs(1:numvarargs) = varargin;
-
-% initialise values
-ALPHA = optargs{1};
-MAX_ITERATIONS = optargs{2};
 w = startPt;
+costs = zeros(optArgs.numIters, 1);
 
 % gradient descent
-for k=1:MAX_ITERATIONS
+for k=1:optArgs.numIters
     
     % evalute gradient
-    currentGradient= objFct.grad(w);  
-    fprintf('Value of objective function: %f,', objFct.eval(w));
-    fprintf('  Norm of current weight vector: %f \n', norm(w));
+    currentGradient= objFct.grad(w);
+    
+    if (optArgs.debugMode == 1);
+        fprintf('Value of objective function: %f,', objFct.eval(w));
+        fprintf('  Norm of current weight vector: %f \n', norm(w));
+    end
     
     % update step
-    w = w - ALPHA*currentGradient;
+    w = w - optArgs.timeStep*currentGradient;
     
     % check if there is no divergence
     if ~isfinite(w)
@@ -52,8 +56,10 @@ stats.weightVectorNorm = norm(w);
 stats.objFctValue = objFct.eval(w);
 
 % plot evolution of cost function
-plot(costs);
-xlabel('number of iterations');
-ylabel('cost function');
+if (optArgs.debugMode == 1);
+    plot(costs);
+    xlabel('number of iterations');
+    ylabel('cost function');
+end
 end
 
