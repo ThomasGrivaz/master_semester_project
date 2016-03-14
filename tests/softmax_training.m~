@@ -1,0 +1,23 @@
+%% SOFTMAX TRAINING
+%In this script we train a softmax regression model on the MNIST dataset
+
+clear;
+load train.mat
+load test.mat
+
+% we take only 10 000 elements at random to speed up computations
+[trainX, idx] = datasample(train.images, 10000, 'replace', false);
+trainy = train.labels(idx,:);
+[testX, idx] = datasample(test.images, 10000, 'replace', false);
+testy = test.labels(idx,:);
+
+% normalise features
+trainX_normalised = gradient_descent_preprocessing(trainX);
+
+% build the objective function together with parameters for gradient descent
+objFct = softmaxcost_builder(trainX_normalised, trainy);
+startPt = zeros(1, length(trainy));
+
+weights = gradient_descent(startPt, objFct);
+
+predictions = 

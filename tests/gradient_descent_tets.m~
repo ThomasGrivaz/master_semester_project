@@ -33,7 +33,6 @@ fprintf('number of iterations without momentum: %d\n', stats2.numIters);
 fprintf('number of iterations with adaptive learning rate: %d',...
     stats3.numIters);
 
-err = (norm(W_gt - W_opt1,'fro') > 1e-5)+ (norm(W_gt - W_opt2,'fro') > 1e-5)...
-    +(norm(W_gt - W_opt3,'fro') > 1e-5);
+err = (norm(W_gt - W_opt1,'fro') > 1e-5)+ (norm(W_gt - W_opt2,'fro') > 1e-5);
 
 end

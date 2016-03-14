@@ -11,7 +11,6 @@ function X_normalised = gradient_descent_preprocessing(X)
 
 % extract mean and standard deviation for each column
 mu = mean(X);
-sigma = std(X);
 sigma=max(std(X),eps);
 
 X_normalised = bsxfun(@minus, X, mu);

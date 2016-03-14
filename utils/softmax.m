@@ -3,7 +3,7 @@ function prob = softmax(x)
 %   formula : Pr(y=i| X,W) = exp(X'*W_i) / sum_j(X'*w_j)
 
 num = exp(x);
-denom = sum(exp(num));
+denom = sum(num);
 
 prob = bsxfun(@rdivide, num, denom);
 

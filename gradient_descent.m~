@@ -54,14 +54,14 @@ for k=1:optArgs.numIters
     w = delta_w + w_old;
     delta_w_old = delta_w;
     
-    % update learning rate in case of adaptive learning rate
+    %update step in case of adaptive learning rate
     if (optArgs.adaptive ==1)
         if objFct.eval(w_old) - objFct.eval(w) > 1e-4
             alpha = alpha*1.2;
-        elseif objFct.eval(w_old) - objFct.eval(w) < 0
-            alpha = alpha*(1/1.2);
         end
+    elseif 
     end
+end
     
     
     % check if there is no divergence
