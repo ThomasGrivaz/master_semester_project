@@ -20,6 +20,7 @@ startPt = zeros(size(trainX, 2), 10);
 options.momentum = 0.5;
 options.timeStep = 1e-6;
 options.debugMode = 1;
+options.numIters = 1500;
 
 weights = gradient_descent(startPt, objFct, options);
 

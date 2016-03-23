@@ -59,7 +59,7 @@ for k=1:optArgs.numIters
         if objFct.eval(w_old) - objFct.eval(w) > 1e-4
             alpha = alpha*1.2;
         elseif objFct.eval(w_old) - objFct.eval(w) < 0
-            alpha = alpha*(1/1.2);
+            alpha = alpha*0.5;
         end
     end
     

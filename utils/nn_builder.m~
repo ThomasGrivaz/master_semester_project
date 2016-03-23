@@ -1,0 +1,14 @@
+function net = nn_builder(nInput, structure, nOutput, actFct)
+%NN_BUILDER Creates a neural network (MLP)
+% Input parameters:
+%   nInput    : number of inputs
+%   structure : structure array of the neural network, i.e. the number of layers
+%   with the number of neurons for each layer e.g. [x y z] is a 3 layers
+%   net with x hidden units for the first layer, y hidden units for the
+%   second one and z hidden units for the third one.
+%   nOutput   : number of outputs
+%   actFct    : activation function of hidden units
+
+
+end
+
