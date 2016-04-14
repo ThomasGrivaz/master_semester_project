@@ -36,7 +36,7 @@ w = startPt;
 mu = optArgs.momentum;
 alpha = optArgs.timeStep;
 costs = zeros(optArgs.numIters, 1);
-delta_w_old = zeros(size(w,1), size(w,2));
+delta_w_old = zeros(size(w));
 
 % gradient descent
 for k=1:optArgs.numIters

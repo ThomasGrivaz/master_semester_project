@@ -27,7 +27,7 @@ for i = (n-1) : -1 : 1
         case 'tanh'
             delta = sech(net.h{i}).^2;
     end
-    net.r{i} = net.r{i+1} * net.w{i+1} * diag(diag(delta));
+    net.r{i} = (net.r{i+1} * net.w{i+1}) .* delta;
     
 end
 

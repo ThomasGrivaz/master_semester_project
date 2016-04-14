@@ -5,8 +5,8 @@ load data/train.mat;
 load data/test.mat;
 
 % we keep only the 100 first samples to test
-X = train.images(1:100,:);
-y = train.labels(1:100,:);
+X = train.images(1:150,:);
+y = train.labels(1:150,:);
 
 
 % normalise the features

@@ -1,0 +1,21 @@
+function net = nn_gradient_step(net)
+%NN_GRADIENT_STEP Update the weights of the network according to gradient
+%descent.
+%
+% Input Parameters:
+%  net : neural network
+%
+% Output parameters:
+%  net : neural network with updated weights
+
+
+for i = 1 : net.nLayers
+    delta_w = -net.timeStep*(1-net.momentum)*net.dW{i} + net.momentum*...
+        net.delta_w_old{i};
+   
+    
+end
+
+
+end
+
