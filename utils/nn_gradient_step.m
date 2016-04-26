@@ -9,9 +9,10 @@ function net = nn_gradient_step(net)
 %  net : neural network with updated weights
 
 % for each layer, update weight
+alpha = net.timeStep;
+mu = net.momentum;
 for i = 1 : net.nLayers
-    delta_w = -net.timeStep*(1-net.momentum)*net.dW{i} + net.momentum*...
-        net.delta_w_old{i};
+    delta_w = -alpha*(1-mu)*net.dW{i} + mu*net.delta_w_old{i};
    net.w{i} = delta_w + net.w{i};
    net.delta_w_old{i} = delta_w;
     

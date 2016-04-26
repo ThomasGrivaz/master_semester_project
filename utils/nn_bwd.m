@@ -1,6 +1,6 @@
 function net = nn_bwd(net, X)
 %NN_BWD Backward propagation through the neural network
-%   
+%
 % Input parameters:
 %  net : neural network
 %  X   : input matrix
@@ -27,14 +27,22 @@ for i = (n-1) : -1 : 1
         case 'tanh'
             delta = sech(net.h{i}).^2;
     end
-    net.r{i} = (net.r{i+1} * net.w{i+1}) .* delta;
+    if (i+1) == n
+        net.r{i} = (net.r{i+1} * net.w{i+1}) .* delta;
+    else
+        net.r{i} = (net.r{i+1}(:,2:end) * net.w{i+1}) .* delta;
+    end
     
 end
 
 % use derivative to compute adjustements to be made to weights
-net.dW{1} = net.r{1}' * X;
+net.dW{1} = net.r{1}(:,2:end)' * [ones(size(X,1), 1),X];
 for i =1 : (n-1)
-    net.dW{i+1} = net.r{i+1}' * net.h{i};
+    if (i+1) == n
+        net.dW{i+1} = net.r{i+1}' * net.h{i};
+    else
+        net.dW{i+1} = net.r{i+1}(:,2:end)' * net.h{i};
+    end
 end
 
 end
