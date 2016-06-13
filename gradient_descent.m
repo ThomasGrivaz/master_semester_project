@@ -84,8 +84,11 @@ stats.objFctValue = objFct.eval(w);
 % plot evolution of cost function
 if (optArgs.debugMode == 1);
     plot(costs);
-    xlabel('number of iterations');
-    ylabel('cost function');
+    hx= xlabel('number of iterations');
+    hy = ylabel('cost function');
+set(gca,'fontsize',20,'fontname','Helvetica','box','off','tickdir',...
+'out','ticklength',[.02 .02],'xcolor',0.5*[1 1 1],'ycolor',0.5*[1 1 1]);
+set([hx; hy],'fontsize',18,'fontname','avantgarde','color',[.3 .3 .3]);
 end
 end
 

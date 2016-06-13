@@ -24,9 +24,11 @@ function net = nn_builder(X, structure, nOutput, actFct, net)
 %  momentum      : momentum for gradient descent
 %  batchSize     : size of batch to train
 %  epochs        : number of epochs
+%  lambda        : coefficient used for weight decay
+%  dropOut       : dropout fraction
 
 %% initialize optional parameters
-
+a = 1;
 if nargin < 5
     net = struct;
 end
@@ -35,6 +37,8 @@ if ~isfield(net, 'timeStep'), net.timeStep = 0.01; end
 if ~isfield(net, 'momentum'), net.momentum = 0.5; end
 if ~isfield(net, 'batchSize'), net.batchSize = 50; end
 if ~isfield(net, 'epochs'), net.epochs = 50; end
+if ~isfield(net, 'lambda'), net.lambda = 0; end
+if ~isfield(net, 'dropOut'), net.dropOut = 0; end
 
 %% initialize activation function
 
@@ -42,11 +46,11 @@ switch actFct
     case 'logistic'
         net.act = 'logistic';
         net.actFct = @(x) 1./(1 + exp(-x));
-    case 'tanh'
-        net.act = 'tanh';
-        net.actFct = @(x) (exp(x) - exp(-x))/(exp(x) + exp(-x));
+    case 'sigm' %suggested in http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf
+        net.act = 'sigm';
+        net.actFct = @(x) 1.7159*tanh(2/3.*x);
     otherwise
-        warning('Choose either "logistic" or "tanh" as activation funcion');
+        warning('Choose either "logistic" or "sigm" as activation funcion');
 end
 
 %% initialize output function and loss function
@@ -62,7 +66,7 @@ else
     % choose softmax if multi-class classification
     net.out = 'soft';
     net.outputFct = @(y) softmax(y);
-    net.lossFct = @(t,y) -sum(sum(t.*log(y))) / size(t,1);
+    net.lossFct = @(t,y) -sum(sum(t.*log(y+eps))) / size(t,1);
 end
 %%
 
@@ -74,17 +78,20 @@ end
 net.nLayers = size(structure, 2) + 1;
 
 % first layer is h1 * nFeatures, add bias
-net.w{1} = randn(structure(1), nFeatures+1) * sqrt(2/nInput);
+%net.w{1} = randn(structure(1), nFeatures+1) * sqrt(2/nInput)*a;
+net.w{1} = unifrnd(-a*sqrt(6/(nFeatures + structure(1))), a*sqrt(6/(nFeatures + structure(1))), structure(1), nFeatures+1);
 net.delta_w_old{1} = zeros(size(net.w{1}));
 
 % layer i is h_i * h_i-1
 for i= 2:net.nLayers-1
-    net.w{i} = randn(structure(i), structure(i-1)+1) * sqrt(2/nInput);
+    %net.w{i} = randn(structure(i), structure(i-1)+1) * sqrt(2/nInput)*a;
+    net.w{i} = unifrnd(-a*sqrt(6/(structure(i) + structure(i-1))), a*sqrt(6/(structure(i) + structure(i-1))), structure(i), structure(i-1)+1);
     net.delta_w_old{i} = zeros(size(net.w{i}));
 end
 
 % last layer is nClasses * h_n
-net.w{net.nLayers} = randn(nOutput, structure(net.nLayers-1)+1) * sqrt(2/nInput);
+%net.w{net.nLayers} = randn(nOutput, structure(net.nLayers-1)+1) * sqrt(2/nInput)*a;
+net.w{net.nLayers} = unifrnd(-a*sqrt(6/(nOutput+structure(net.nLayers-1))), a*sqrt(6/(nOutput+structure(net.nLayers-1))), nOutput, structure(net.nLayers-1)+1);
 net.delta_w_old{net.nLayers} = zeros(size(net.w{net.nLayers}));
 end
 

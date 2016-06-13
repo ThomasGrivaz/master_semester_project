@@ -4,24 +4,26 @@ close all;
 load data/train.mat;
 load data/test.mat;
 
-X = train.images(1:5000,:);
-y = train.labels(1:5000,:);
+X = train.images(1:50000,:);
+y = train.labels(1:50000,:);
 
-validX = train.images(5001:10000,:);
-validy = train.labels(5001:10000,:);
+validX = train.images(50001:end,:);
+validy = train.labels(50001:end,:);
 
-testX = test.images(1:1000,:);
-testy = test.labels(1:1000,:);
+testX = test.images;
+testy = test.labels;
 
-nn.batchSize = 20;
-nn.timeStep = 0.0001;
-nn.momentum = 0.2;
-nn.epochs = 100;
+%X = gradient_descent_preprocessing(X);
 
-
-% normalise the features
-X = gradient_descent_preprocessing(X);
-nn = nn_builder(X, 50, 10, 'logistic', nn);
-nn = nn_train(nn, X, y, validX, validy);
-[labels, error] = nn_test(nn, testX, testy);
+nn.batchSize = 100;  
+nn.timeStep = 0.01;  
+nn.momentum = 0.4; 
+nn.epochs = 100; 
+nn.lambda = 0;
+nn.dropOut = 0;
+nn = nn_builder(X, [300 300] , 10, 'logistic', nn);
+tic
+nn = nn_train(nn, X, y, validX, validy, 1, 0);
+toc
+[~, my_error] = nn_test(nn, testX, testy);
 

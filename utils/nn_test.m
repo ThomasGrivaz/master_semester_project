@@ -12,6 +12,7 @@ function [labels, missclass_rate] = nn_test(net, X, y)
 
 % do a forward pass on test set, then retain max prob of last layer for
 % labelling
+net.dropOut = 0;
 net = nn_fwd(net, X, y);
 [~, labels] = max(net.a{net.nLayers}, [], 2);
 
